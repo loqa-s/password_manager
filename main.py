@@ -58,6 +58,20 @@ def save_data():
                 input_website.delete(0, END)
                 input_pass.delete(0, END)
 
+def search_website():
+    website = input_website.get()
+    try:
+        with open('data.json', 'r') as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(message='There are no saved passwords.')
+    else:
+        if website in data:
+            website_email = data[website]['email']
+            website_password = data[website]['password']
+            messagebox.showinfo(title='Found!', message=f'Email: {website_email}\nPassword: {website_password}')
+        else:
+            messagebox.showinfo(message=f'No data found!')
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
@@ -72,14 +86,17 @@ canvas.grid(column=1, row=0)
 label_website = Label(text='Website: ')
 label_website.grid(column=0, row=1)
 
-input_website = Entry(width=35)
-input_website.grid(column=1, row=1, columnspan=2)
+input_website = Entry(width=21)
+input_website.grid(column=1, row=1)
 input_website.focus()
+
+search_button = Button(text='Search', width=13, command=search_website)
+search_button.grid(column=2, row=1)
 
 label_email = Label(text='Email/Usernane: ')
 label_email.grid(column=0, row=2)
 
-input_email = Entry(width=35)
+input_email = Entry(width=38)
 input_email.grid(column=1, row=2, columnspan=2)
 input_email.insert(0, 'mymail@pup.ru')
 
